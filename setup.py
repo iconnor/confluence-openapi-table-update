@@ -2,23 +2,24 @@
 import os
 from setuptools import setup, find_packages
 
-# Get the version from the VERSION file
-version = open(os.path.join(os.path.dirname(__file__), 'VERSION')).read().strip()
+REQUIRES_PYTHON = '>=3.8.0'
+VERSION = '0.0.1'
 
 # Get the long description from the README file
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as f:
     long_description = f.read()
 
 setup(name='Confluence OpenAPI Table Update',
-    version=version,
+    version=VERSION,
     description='A tool to update Confluence tables from OpenAPI specifications',
     long_description=long_description,
     url='http://github.com/iconnor/confluence-openapi-table-update',
+    python_requires=REQUIRES_PYTHON,
     license='MIT',
     requires=[
         'requests',
         'argparse',
-        'atlassian-python-api'
+        'atlassian'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
