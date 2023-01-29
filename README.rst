@@ -1,9 +1,9 @@
-=================
+===============================
 Confluence-OpenAPI-Table-Update
-=================
--------------------------
+===============================
+-----------------------------------
 Let code generate confluence tables
--------------------------
+-----------------------------------
 
 Introduction
 ============
@@ -29,7 +29,7 @@ Python command line to take OpenAPI/Swagger JSON definition and update tables wi
 Usage
 -----
 
-python confluence-openapi-table-update.py -u <confluence-username> -p <confluence-password> -c <confluence-page-id> -s <openapi-spec-file>
+python confluence-openapi-table-update.py --open-api-json-url https://petstore.swagger.io/v2/swagger.json --confluence-url https://myconfluence.atlassian.net
 
 Options
 -------
@@ -55,7 +55,9 @@ Example
 -------
 
 Example of OpenAPI spec
-[image](example-spec.png)
+.. image:: example-spec.png
+    :alt: (Example OpenAPI spec json)
 
 Image of example table
-[image](example-table.png)
+.. image:: example-table.png
+    :alt: (Example confluence generated table)
