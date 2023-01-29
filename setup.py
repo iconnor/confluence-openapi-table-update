@@ -3,7 +3,7 @@ import os
 from setuptools import setup, find_packages
 
 REQUIRES_PYTHON = '>=3.8.0'
-VERSION = '0.0.3'
+VERSION = '0.0.4'
 
 # Get the long description from the README file
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as f:
