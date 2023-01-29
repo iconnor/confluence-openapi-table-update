@@ -1,13 +1,13 @@
-# Python script to update tables in confluence based on OpenAPI spec
+# Update tables in confluence based on OpenAPI spec
 
 # About
 
 This script is used to update tables in confluence based on OpenAPI spec. 
 
 The goal is to take OpenAPI spec like this:
-[image](example-spec.png)
+![image](./example-spec.png)
 and make it look like a table in confluence like this:
-[image](example-table.png)
+![image](./example-table.png)
 
 # Getting started
 
