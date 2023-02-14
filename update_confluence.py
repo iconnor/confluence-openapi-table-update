@@ -10,7 +10,7 @@ def endpoint_content(method_dict):
     endpoint = ""
     if "parameters" in method_dict:
         for parameter in method_dict["parameters"]:
-            if parameter["required"]:
+            if ("required" in parameter) and (parameter["required"] == True):
                 if "?" in endpoint:
                     endpoint += "&amp;"
                 else:
@@ -22,7 +22,7 @@ def parameters_content(parameters_dict):
     parameters = ""
     for parameter in parameters_dict:
         field_name = parameter['name']
-        if parameter["required"] == False:
+        if parameter.get("required") == False:
             field_name += " (optional)"
         if "description" in parameter:
             description = markdown(parameter['description'])
@@ -84,8 +84,14 @@ def openapi_to_html(open_api_json_url):
             else:
                 html += "<td></td>"
             html += "<td>{}</td>".format(method.upper())
-            html += "<td>{}</td>".format(data["paths"][path][method]["description"])
-            html += "<td>{}</td>".format(responses_content(data["paths"][path][method]["responses"]))
+            if "description" in data["paths"][path][method]:
+                html += "<td>{}</td>".format(data["paths"][path][method]["description"])
+            else:
+                html += "<td></td>"
+            if "responses" in data["paths"][path][method]:
+                html += "<td>{}</td>".format(responses_content(data["paths"][path][method]["responses"]))
+            else:
+                html += "<td></td>"
             html += "</tr>"
 
     # close table
@@ -106,9 +112,9 @@ def main():
     parser.add_argument('--confluence-token', required=False,
                         help='Confluence personal API token', default=os.getenv('JIRA_TOKEN'))
     parser.add_argument('--confluence-space', required=False,
-                        help='Confluence space', default='IMC')
+                        help='Confluence space', default='LEAD')
     parser.add_argument('--confluence-page-title', required=False,
-                        help='Confluence page title', default='Test Page')
+                        help='Confluence page title', default='API Page')
     parser.add_argument('--confluence-page-insertion-tag', required=False,
                         help='Confluence page insertion tag (table will replace table after this tag)', default='<h4>Endpoints')
     
@@ -123,6 +129,10 @@ def main():
     confluence = Confluence(url, email, api_key)
     # Get the page id for the page we want to update
     page_id = confluence.get_page_id(space, args.confluence_page_title)
+
+    if page_id is None:
+        print("Page not found")
+        return
 
     body = openapi_to_html(args.open_api_json_url)
 
@@ -140,12 +150,14 @@ def main():
     page['body']['storage']['value'] = page['body']['storage']['value'][:table_start] + body + page['body']['storage']['value'][table_end:]
 
     # Update the page with the new content
+    print("Updating page", page_id, args.confluence_page_title)
+    
+    print(page)
     ret = confluence.update_page(
         page_id=page_id,
-        title='Test Page',
+        title=args.confluence_page_title,
         body=page['body']['storage']['value'],
         type='page',
-        representation='storage',
         always_update=True
     )
 
